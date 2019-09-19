@@ -1,17 +1,22 @@
 ###
 # Build step
 ###
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-node:10-build as build
+FROM balenalib/%%BALENA_MACHINE_NAME%%-node:10-build as build
 
-RUN JOBS=MAX npm install -g --production --silent \
+RUN JOBS=MAX npm install -g --unsafe-perm --build-from-source \
        node-red \
        node-red-admin \
-       node-red-contrib-resinio
+       node-red-contrib-resinio \
+       node-red-dashboard \
+       node-red-contrib-ttn \
+       node-red--node-rbe \
+       node-red-contrib-influxdn \
+       node-red-contrib-web-worldmap
 
 ###
 # Runtime image
 ###
-FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine-node:10-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-node:10-run
 
 # Defines our working directory in container
 WORKDIR /usr/src/app
